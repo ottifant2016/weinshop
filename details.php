@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <?php
 
-    require_once 'dbcon.inc.php';
+    
+    require_once './biblio_weinshop.inc.php'; //TEST mit lokaler Datenbank
+    $con = db_connection();
 ?>
 <html>
     <head>
@@ -12,7 +14,16 @@
         <h1>Detailansicht</h1>
         <?php
         
-            $sql = 'select p.id_produkte, p.name as name, p.kurzbeschreibung as kurzbeschr, t.name as typ, l.name as land, r.name as region, w.name as weingut, p.volumen as volumen, p.preis as preis, p.beschreibung as beschreibung from produkte p join typ t on typ_id = id_typ join weingut w on weingut_id = id_weingut join regionen r on region_id = id_region join laender l on land_id = id_land where p.id_produkte = '.$_GET['id'];
+            $sql = 'select p.id_produkte, p.name as name, p.kurzbeschreibung as kurzbeschr, '
+                    . 't.name as typ, l.name as land, r.name as region, '
+                    . 'w.name as weingut, p.volumen as volumen, '
+                    . 'p.preis as preis, p.beschreibung as beschreibung '
+                    . 'from produkte p '
+                    . 'join typ t on typ_id = id_typ '
+                    . 'join weingut w on weingut_id = id_weingut '
+                    . 'join regionen r on region_id = id_region '
+                    . 'join laender l on land_id = id_land where '
+                    . 'p.id_produkte = '.$_GET['id'];
             
             $res = mysqli_query($con, $sql);
             

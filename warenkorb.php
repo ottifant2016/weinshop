@@ -24,7 +24,7 @@ require_once 'biblio_weinshop.inc.php';
     </div>
     <div id="main">
         <h1>Warenkorb</h1>
-        <form action>
+        <form action="artikel_aendern.php" method="post">
         <table>
             <thead>
                 <tr>
@@ -55,6 +55,7 @@ require_once 'biblio_weinshop.inc.php';
     </div>
     <div id="footer">Fußzeile</div>
 </div>
+    
     
 </body>
 </html>

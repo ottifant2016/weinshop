@@ -79,16 +79,16 @@ function warenkorb_anzeigen($kunde_id) {
 function tabelle_warenkorb($res, $kunde_id) {
     $table = "";
     while ($row = mysqli_fetch_assoc($res)) {
-        $table .= "<tr><td><a href=#>".$row['name']."</a></td>"
+        $table .= "<tr><td><a href=details.php?id=".$row['id_produkte'].">".$row['name']."</a></td>"
         ."<td>".$row['typ']."</td>"
         ."<td>".$row['land']."</td>"
         ."<td>".$row['region']."</td>"
         ."<td>".$row['weingut']."</td>"
         ."<td>".$row['volumen']."</td>"
-        .'<td><input class="menge" type="number" name="menge'.$row['id_produkte'].'" min="0" step="1" value="'.$row['menge'].'"></td>'
+        .'<td><input class="menge" type="number" name="'.$row['id_produkte'].'" min="0" step="1" value="'.$row['menge'].'"></td>'
         ."<td>".$row['preis']."</td>"
         ."<td>".$row['gesamt']."</td>"
-        .'<td><a href=artikel_aendern.php?id='.$row['id_produkte'].'>ändern</a></td>'
+        .'<td><input type="submit" value="ändern"></td>'
         .'<td><a href=artikel_entfernen.php?id='.$row['id_produkte'].'>löschen</a></td></tr>';
     }
     $summe = gesamt_preis($kunde_id);
