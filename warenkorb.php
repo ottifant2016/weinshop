@@ -7,6 +7,7 @@ require_once 'biblio_weinshop.inc.php';
 <title>Weinhandel</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="styles/styles.css" media="screen">
+<link href="styles/warenkorb.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
     
@@ -24,7 +25,7 @@ require_once 'biblio_weinshop.inc.php';
     </div>
     <div id="main">
         <h1>Warenkorb</h1>
-        <form action="artikel_aendern.php" method="post">
+        <form action="menge_aendern.php" method="post">
         <table>
             <thead>
                 <tr>

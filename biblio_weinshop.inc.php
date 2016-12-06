@@ -22,20 +22,34 @@ function db_close($con) {
  * @return Warenkorb ID
  */
 function pruefen_warenkorb($kunde_id) {
-    $con = db_connection();
-    $sql_select = "SELECT id_bestellung FROM bestellungen WHERE kunde_id =".$kunde_id." AND status LIKE 'Warenkorb';";
-    $res = mysqli_query($con, $sql_select);    
-    if (mysqli_affected_rows($con) == 0){
+    $wk_id = warenkorb_id($kunde_id);   
+    if (!$wk_id){
+        $con = db_connection();
         $sql = "INSERT INTO bestellungen (kunde_id) VALUES (".$kunde_id.");";
         mysqli_query($con, $sql);
         $warenkorb_id = mysqli_insert_id($con);
+        db_close($con);
+        return $warenkorb_id;
     }
     else {
+        return $warenkorb_id;
+    }
+}
+
+function warenkorb_id($kunde_id) {
+    $con = db_connection();
+    $sql = "SELECT id_bestellung FROM bestellungen WHERE kunde_id =".$kunde_id." AND status LIKE 'Warenkorb';";
+    $res = mysqli_query($con, $sql);
+    if (mysqli_affected_rows($con) == 0){
+        $warenkorb_id = FALSE;
+         db_close($con);
+        return $warenkorb_id;
+    }
+    else{
         $temp = mysqli_fetch_row($res);
         $warenkorb_id = $temp[0];
+        return $warenkorb_id;
     }
-    db_close($con);
-    return $warenkorb_id;
 }
 
 /**
@@ -85,10 +99,10 @@ function tabelle_warenkorb($res, $kunde_id) {
         ."<td>".$row['region']."</td>"
         ."<td>".$row['weingut']."</td>"
         ."<td>".$row['volumen']."</td>"
-        .'<td><input class="menge" type="number" name="'.$row['id_produkte'].'" min="0" step="1" value="'.$row['menge'].'"></td>'
-        ."<td>".$row['preis']."</td>"
+        .'<td><input class="menge" type="number" name="'.$row['id_produkte'].'" min="0" value="'.$row['menge'].'"></td>'
+        .'<td>'.$row['preis'].'</td>'
         ."<td>".$row['gesamt']."</td>"
-        .'<td><input type="submit" value="ändern"></td>'
+        .'<td><input class="test" type="submit" value="ändern"></td>'
         .'<td><a href=artikel_entfernen.php?id='.$row['id_produkte'].'>löschen</a></td></tr>';
     }
     $summe = gesamt_preis($kunde_id);
@@ -134,4 +148,16 @@ function gesamt_preis($kunde_id) {
     $summe = $temp[0];
     db_close($con);
     return $summe;
+}
+
+function menge_aendern($kunde_id, $produkt_id, $menge) {
+    $warenkorb_id = warenkorb_id($kunde_id);
+    $con = db_connection();
+    $sql = "UPDATE bestellpositionen bp, bestellungen b "
+            . "SET menge = ".$menge." "
+            . "WHERE bp.produkt_id = ".$produkt_id." AND "
+            . "bp.bestellungen_id = ".$warenkorb_id." AND "
+            . "b.kunde_id = ".$kunde_id.";";
+    mysqli_query($con, $sql);
+    db_close($con);
 }

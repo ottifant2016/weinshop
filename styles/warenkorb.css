@@ -1,0 +1,13 @@
+.test {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: 0 none;
+    color:#ac2135;
+    font-weight: bold;
+    text-decoration: underline;
+    font-family: Calibri, sans-serif;
+    font-size: 16px;
+}
+.test:hover {
+    text-decoration:none;
+    cursor: pointer;
+}
